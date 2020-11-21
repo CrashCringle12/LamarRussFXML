@@ -26,7 +26,7 @@
             <TableColumn fx:id="description" prefWidth="231.0" text="Description" />
          </columns>
       </TableView>
-      <Button layoutX="454.0" layoutY="692.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="108.0" text="Show Details" />
+      <Button fx:id="detailbutton" layoutX="454.0" layoutY="692.0" mnemonicParsing="false" onAction="#showDetails" prefHeight="37.0" prefWidth="108.0" text="Show Details" />
       <Button layoutX="288.0" layoutY="692.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="152.0" text="Show Details In-Pane" />
       <Line endX="446.0" layoutX="115.0" layoutY="202.0" startX="-100.0" />
       <Text layoutX="15.0" layoutY="245.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Alerts">

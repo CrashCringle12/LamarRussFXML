@@ -6,6 +6,7 @@
 package Controller;
 
 import Model.Alertmodel;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
@@ -15,16 +16,21 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
@@ -50,8 +56,6 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TextField searchbar;
 
-    @FXML
-    private Button buttonDelete;
 
     @FXML
     private TableView<Alertmodel> alertTable;
@@ -109,6 +113,27 @@ public class FXMLDocumentController implements Initializable {
         }
 
     }
+    
+    @FXML
+    void showDetails(ActionEvent event) throws IOException {
+
+        Alertmodel selected = alertTable.getSelectionModel().getSelectedItem();
+        
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/DetailModelView.fxml"));
+
+        Parent detailedModelView = loader.load();
+
+        Scene tableViewScene = new Scene(detailedModelView);
+
+        DetailModelViewController detailedController = loader.getController();
+        detailedController.initData(selected);
+
+        Stage stage = new Stage();
+        stage.setScene(tableViewScene);
+        stage.show();
+
+    }
+
         @FXML
     void advancedSearch(ActionEvent event) {
         System.out.println("Clicked");
@@ -333,6 +358,7 @@ public class FXMLDocumentController implements Initializable {
         date.setCellValueFactory(new PropertyValueFactory<>("Date"));
         accountName.setCellValueFactory(new PropertyValueFactory<>("Accountname"));
         description.setCellValueFactory(new PropertyValueFactory<>("Description"));
+        alertTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
     }
 
