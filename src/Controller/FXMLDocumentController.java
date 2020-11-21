@@ -18,6 +18,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -55,7 +56,6 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private TextField searchbar;
-
 
     @FXML
     private TableView<Alertmodel> alertTable;
@@ -113,12 +113,12 @@ public class FXMLDocumentController implements Initializable {
         }
 
     }
-    
+
     @FXML
     void showDetails(ActionEvent event) throws IOException {
 
         Alertmodel selected = alertTable.getSelectionModel().getSelectedItem();
-        
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/DetailModelView.fxml"));
 
         Parent detailedModelView = loader.load();
@@ -134,7 +134,31 @@ public class FXMLDocumentController implements Initializable {
 
     }
 
-        @FXML
+    @FXML
+    void showDetailsInPane(ActionEvent event) throws IOException {
+
+        Alertmodel selectedAlert = alertTable.getSelectionModel().getSelectedItem();
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/DetailModelView.fxml"));
+
+        Parent detailedModelView = loader.load();
+
+        Scene tableViewScene = new Scene(detailedModelView);
+
+        DetailModelViewController detailedController = loader.getController();
+
+        detailedController.initData(selectedAlert);
+
+        Scene currentScene = ((Node) event.getSource()).getScene();
+        detailedController.setTheOleScene(currentScene);
+
+        Stage stage = (Stage) currentScene.getWindow();
+
+        stage.setScene(tableViewScene);
+        stage.show();
+    }
+
+    @FXML
     void advancedSearch(ActionEvent event) {
         System.out.println("Clicked");
 
@@ -316,17 +340,17 @@ public class FXMLDocumentController implements Initializable {
         return s;
 
     }
-    
+
     public List<Alertmodel> readByAccountname(String name) {
         Query query = manager.createNamedQuery("Alertmodel.findByAccountname");
         query.setParameter("accountname", name);
 
         List<Alertmodel> alerts = query.getResultList();
         for (Alertmodel s : alerts) {
-        if (s != null) {
-            System.out.println(s.getId() + " " + s.getAccountname() + ": " + (s.getSeverity() ? "*Bad* " : "Moderate ") + s.getDate()
-                    + "\n" + s.getDescription());
-        }
+            if (s != null) {
+                System.out.println(s.getId() + " " + s.getAccountname() + ": " + (s.getSeverity() ? "*Bad* " : "Moderate ") + s.getDate()
+                        + "\n" + s.getDescription());
+            }
         }
         return alerts;
 

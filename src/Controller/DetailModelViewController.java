@@ -3,13 +3,16 @@ package Controller;
 import Model.Alertmodel;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class DetailModelViewController {
 
@@ -63,6 +66,24 @@ public class DetailModelViewController {
         }
     }
   
+    Scene previousScene;
+    public void setTheOleScene(Scene scene) {
+        previousScene = scene;
+
+    }
+    
+    //Borrowed from source code
+    @FXML
+    void goBack(ActionEvent event) {
+        // option 1: get current stage -- from event
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        
+        
+        if (previousScene != null) {
+            stage.setScene(previousScene);
+        }
+
+    }
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
         assert alertID != null : "fx:id=\"alertID\" was not injected: check your FXML file 'mainmenu.fxml'.";
