@@ -109,6 +109,27 @@ public class FXMLDocumentController implements Initializable {
         }
 
     }
+        @FXML
+    void advancedSearch(ActionEvent event) {
+        System.out.println("Clicked");
+
+        String name = searchbar.getText();
+        System.out.println(name);
+        List<Alertmodel> alerts = readByAccountNameAdvanced(name);
+
+        if (alerts == null || alerts.isEmpty()) {
+
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Information Dialog Box");
+            alert.setHeaderText("Lamar's Finance App Header");
+            alert.setContentText("No alert found");
+            alert.showAndWait();
+        } else {
+
+            setTableData(alerts);
+        }
+
+    }
 
     @FXML
     public void readAll(ActionEvent event) {
@@ -284,6 +305,20 @@ public class FXMLDocumentController implements Initializable {
         }
         return alerts;
 
+    }
+
+    public List<Alertmodel> readByAccountNameAdvanced(String name) {
+        Query query = manager.createNamedQuery("Alertmodel.findByAccountnameAdvanced");
+
+        query.setParameter("accountname", name);
+
+        List<Alertmodel> alerts = query.getResultList();
+        for (Alertmodel element : alerts) {
+            System.out.println(element.getId() + " " + element.getAccountname() + " " + (element.getSeverity() ? "Bad" : "Moderate") + "\n"
+                    + element.getDescription());
+        }
+
+        return alerts;
     }
 
     // Database manager
