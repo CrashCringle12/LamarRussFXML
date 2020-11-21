@@ -7,16 +7,24 @@ package Controller;
 
 import Model.Alertmodel;
 import java.net.URL;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Scanner;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
@@ -31,7 +39,7 @@ public class FXMLDocumentController implements Initializable {
     private Button button;
 
     @FXML
-    private Label label;
+    private Text searchBy;
 
     @FXML
     private Button buttonCreate;
@@ -40,32 +48,66 @@ public class FXMLDocumentController implements Initializable {
     private Button buttonUpdate;
 
     @FXML
+    private TextField searchbar;
+
+    @FXML
     private Button buttonDelete;
 
     @FXML
-    private TableView<?> studentTable;
+    private TableView<Alertmodel> alertTable;
 
     @FXML
-    private TableColumn<?, ?> alertID;
+    private TableColumn<Alertmodel, Integer> alertID;
 
     @FXML
-    private TableColumn<?, ?> severity;
+    private TableColumn<Alertmodel, Boolean> severity;
 
     @FXML
-    private TableColumn<?, ?> date;
+    private TableColumn<Alertmodel, Date> date;
 
     @FXML
-    private TableColumn<?, ?> studentGPA;
+    private TableColumn<Alertmodel, String> description;
 
     @FXML
-    private TableColumn<?, ?> studentName1;
+    private TableColumn<Alertmodel, String> accountName;
 
     @FXML
     private Button searchbutton;
 
+    private ObservableList<Alertmodel> alertData;
+
+    public void setTableData(List<Alertmodel> alertList) {
+
+        alertData = FXCollections.observableArrayList();
+
+        alertList.forEach(s -> {
+            alertData.add(s);
+        });
+
+        alertTable.setItems(alertData);
+        alertTable.refresh();
+    }
+
     @FXML
     void search(ActionEvent event) {
-        System.out.println("Clicked!");
+        System.out.println("Clicked");
+
+        String name = searchbar.getText();
+        System.out.println(name);
+        List<Alertmodel> alerts = readByAccountname(name);
+
+        if (alerts == null || alerts.isEmpty()) {
+
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Information Dialog Box");
+            alert.setHeaderText("Lamar's Finance App Header");
+            alert.setContentText("No alert found");
+            alert.showAndWait(); // line 5
+        } else {
+
+            setTableData(alerts);
+        }
+
     }
 
     @FXML
@@ -228,6 +270,21 @@ public class FXMLDocumentController implements Initializable {
         return s;
 
     }
+    
+    public List<Alertmodel> readByAccountname(String name) {
+        Query query = manager.createNamedQuery("Alertmodel.findByAccountname");
+        query.setParameter("accountname", name);
+
+        List<Alertmodel> alerts = query.getResultList();
+        for (Alertmodel s : alerts) {
+        if (s != null) {
+            System.out.println(s.getId() + " " + s.getAccountname() + ": " + (s.getSeverity() ? "*Bad* " : "Moderate ") + s.getDate()
+                    + "\n" + s.getDescription());
+        }
+        }
+        return alerts;
+
+    }
 
     // Database manager
     EntityManager manager;
@@ -235,8 +292,13 @@ public class FXMLDocumentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // loading data from database
-        //database reference: "IntroJavaFXPU"
         manager = (EntityManager) Persistence.createEntityManagerFactory("LamarRussFXMLPU").createEntityManager();
+        alertID.setCellValueFactory(new PropertyValueFactory<>("Id"));
+        severity.setCellValueFactory(new PropertyValueFactory<>("Severity"));
+        date.setCellValueFactory(new PropertyValueFactory<>("Date"));
+        accountName.setCellValueFactory(new PropertyValueFactory<>("Accountname"));
+        description.setCellValueFactory(new PropertyValueFactory<>("Description"));
+
     }
 
 }

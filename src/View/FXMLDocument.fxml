@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -13,13 +12,12 @@
 <AnchorPane id="AnchorPane" prefHeight="712.0" prefWidth="577.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.FXMLDocumentController">
     <children>
         <Button fx:id="button" layoutX="14.0" layoutY="54.0" onAction="#readAll" text="Read All Alerts" />
-        <Label fx:id="label" layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
       <Button fx:id="buttonCreate" layoutX="14.0" layoutY="20.0" mnemonicParsing="false" onAction="#createAlert" text="Create Alert" />
       <Button fx:id="buttonUpdate" layoutX="12.0" layoutY="108.0" mnemonicParsing="false" onAction="#updateAlert" text="Update Alert" />
       <Button fx:id="buttonDelete" layoutX="12.0" layoutY="155.0" mnemonicParsing="false" onAction="#deleteAlert" text="Delete Alerts" />
       <Button layoutX="256.0" layoutY="20.0" mnemonicParsing="false" text="Read By ID" />
       <Button layoutX="241.0" layoutY="67.0" mnemonicParsing="false" text="Read By Severity" />
-      <TableView fx:id="studentTable" editable="true" layoutX="4.0" layoutY="303.0" prefHeight="340.0" prefWidth="568.0">
+      <TableView fx:id="alertTable" editable="true" layoutX="4.0" layoutY="303.0" prefHeight="340.0" prefWidth="568.0">
          <columns>
             <TableColumn fx:id="alertID" prefWidth="29.0" text="ID" />
             <TableColumn fx:id="severity" prefWidth="75.0" text="Severity" />
@@ -36,15 +34,15 @@
             <Font size="31.0" />
          </font>
       </Text>
-      <Text layoutX="15.0" layoutY="282.0" strokeType="OUTSIDE" strokeWidth="0.0" text="By Severity">
+      <Text fx:id="searchBy" layoutX="15.0" layoutY="282.0" strokeType="OUTSIDE" strokeWidth="0.0" text="By Account Name">
          <font>
             <Font size="15.0" />
          </font>
       </Text>
       <Button layoutX="392.0" layoutY="20.0" mnemonicParsing="false" text="Read By Account Name" />
       <Button layoutX="376.0" layoutY="67.0" mnemonicParsing="false" text="Read By Account and Severity" />
-      <TextField layoutX="96.0" layoutY="264.0" prefHeight="25.0" prefWidth="231.0" text="Enter Severity Level" />
-      <Button fx:id="searchbutton" layoutX="376.0" layoutY="264.0" mnemonicParsing="false" onAction="#search" prefHeight="25.0" prefWidth="94.0" text="Search" />
+      <TextField fx:id="searchbar" layoutX="161.0" layoutY="264.0" prefHeight="25.0" prefWidth="231.0" text="Enter Account Name" />
+      <Button fx:id="searchbutton" layoutX="438.0" layoutY="264.0" mnemonicParsing="false" onAction="#search" prefHeight="25.0" prefWidth="94.0" text="Search" />
       <!-- Button fx:id="buttonReadAccounts" layoutX="14.0" layoutY="60.0" mnemonicParsing="false" onAction="#readByAccountname" text="Read Alert Accounts" /!-->
       <!-- Button fx:id="buttonReadSeverity" layoutX="14.0" layoutY="100.0" mnemonicParsing="false" onAction="#readSeverities" text="Read Alert Accounts" /!-->
     </children>

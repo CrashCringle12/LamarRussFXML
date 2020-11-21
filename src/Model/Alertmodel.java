@@ -31,7 +31,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Alertmodel.findById", query = "SELECT a FROM Alertmodel a WHERE a.id = :id"),
     @NamedQuery(name = "Alertmodel.findBySeverity", query = "SELECT a FROM Alertmodel a WHERE a.severity = :severity"),
     @NamedQuery(name = "Alertmodel.findByAccountname", query = "SELECT a FROM Alertmodel a WHERE a.accountname = :accountname"),
+    @NamedQuery(name = "Alertmodel.findByDescription", query = "SELECT a FROM Alertmodel a WHERE a.description = :description"),
     @NamedQuery(name = "Alertmodel.findByDate", query = "SELECT a FROM Alertmodel a WHERE a.date = :date")})
+
 public class Alertmodel implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -41,8 +43,7 @@ public class Alertmodel implements Serializable {
     private Integer id;
     @Column(name = "SEVERITY")
     private Boolean severity;
-    @Lob
-        @Column(name = "DESCRIPTION")
+    @Lob        @Column(name = "DESCRIPTION")
     private String description;
     @Column(name = "ACCOUNTNAME")
     private String accountname;
